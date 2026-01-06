@@ -40,6 +40,8 @@ class _ContactPageState extends State<ContactPage> {
   }
 
   // MEN MODIFIKASYON POU VOYE EMAIL LA TOUT BON VRE
+  // ... tout enpòtasyon yo rete menm jan ...
+
   Future<void> _submit() async {
     final form = _formKey.currentState;
     if (form == null || !form.validate()) return;
@@ -47,14 +49,20 @@ class _ContactPageState extends State<ContactPage> {
     setState(() => _isSending = true);
 
     try {
-      // Koneksyon ak EmailJS
+      // 1. Inisyalize koneksyon an (Sa a enpòtan anpil)
+      emailjs.init('jX1CBeg7sZYx1K2t_' as emailjs.Options);
+
+      // 2. Voye done yo
       await emailjs.send(
-        'service_27bhrkb', // RANPLASE SA AK SERVICE ID PA W LA
-        'template_wve0kk9', // RANPLASE SA AK TEMPLATE ID PA W LA
+        'service_27bhrkb',
+        'template_wve0kk9',
         {
-          'from_name': _name.text,
-          'reply_to': _email.text,
-          'message': _message.text,
+          'from_name': _name.text
+              .trim(), // Nou ajoute .trim() pou evite espas initil
+          'reply_to': _email.text.trim(),
+          'message': _message.text.trim(),
+          'name': _name.text
+              .trim(), // NOU AJOUTE SA POU SI TEMPLATE LA TOUJOURS GEN {{name}}
         },
         const emailjs.Options(
           publicKey: 'jX1CBeg7sZYx1K2t_', // RANPLASE SA AK PUBLIC KEY PA W LA
