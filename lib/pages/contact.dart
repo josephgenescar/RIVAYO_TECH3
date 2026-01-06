@@ -51,7 +51,11 @@ class _ContactPageState extends State<ContactPage> {
       await emailjs.send(
         'service_27bhrkb', // RANPLASE SA AK SERVICE ID PA W LA
         'template_wve0kk9', // RANPLASE SA AK TEMPLATE ID PA W LA
-        {'name': _name.text, 'reply_to': _email.text, 'message': _message.text},
+        {
+          'from_name': _name.text,
+          'reply_to': _email.text,
+          'message': _message.text,
+        },
         const emailjs.Options(
           publicKey: 'jX1CBeg7sZYx1K2t_', // RANPLASE SA AK PUBLIC KEY PA W LA
         ),
