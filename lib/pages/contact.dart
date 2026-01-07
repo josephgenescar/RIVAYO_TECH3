@@ -46,16 +46,15 @@ class _ContactPageState extends State<ContactPage> {
     setState(() => _isSending = true);
 
     try {
-      // Voye done yo dirèkteman
       await emailjs.send(
-        'service_27bhrkb',
-        'template_wve0kk9',
+        'service_27bhrkb', // Service ID
+        'template_wve0kk9', // Template ID
         {
-          'from_name': _name.text.trim(),
-          'reply_to': _email.text.trim(),
-          'message': _message.text.trim(),
+          'from_name': _name.text.trim(), // Nom
+          'reply_to': _email.text.trim(), // Email
+          'message': _message.text.trim(), // Message
         },
-        const emailjs.Options(publicKey: 'jX1CBeg7sZYx1K2t_'),
+        emailjs.Options(publicKey: 'jX1CBeg7sZYx1K2t_'),
       );
 
       if (!mounted) return;
