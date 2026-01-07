@@ -49,9 +49,6 @@ class _ContactPageState extends State<ContactPage> {
     setState(() => _isSending = true);
 
     try {
-      // 1. Inisyalize koneksyon an (Sa a enpòtan anpil)
-      emailjs.init('jX1CBeg7sZYx1K2t_' as emailjs.Options);
-
       // 2. Voye done yo
       await emailjs.send(
         'service_27bhrkb',
