@@ -47,8 +47,8 @@ class _ContactPageState extends State<ContactPage> {
 
     try {
       await emailjs.send(
-        'service_27bhrkb', // Service ID
-        'template_wve0kk9', // Template ID
+        'service_27bhrkb',
+        'template_wve0kk9',
         {
           'from_name': _name.text.trim(), // Nom
           'reply_to': _email.text.trim(), // Email
