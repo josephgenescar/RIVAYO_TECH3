@@ -51,9 +51,9 @@ class _ContactPageState extends State<ContactPage> {
         'service_27bhrkb',
         'template_wve0kk9',
         {
+          'from_name': _name.text.trim(),
           'reply_to': _email.text.trim(),
           'message': _message.text.trim(),
-          'name': _name.text.trim(),
         },
         const emailjs.Options(publicKey: 'jX1CBeg7sZYx1K2t_'),
       );
