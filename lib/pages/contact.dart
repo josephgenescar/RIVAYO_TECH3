@@ -1,9 +1,11 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:http/http.dart' as http;
+
 import '../widgets/custom_app_bar.dart';
 import '../widgets/footer.dart';
 import '../widgets/premium_fab.dart';
-import 'package:emailjs/emailjs.dart' as emailjs; // Enpòtasyon EmailJS
 
 class ContactPage extends StatefulWidget {
   const ContactPage({super.key});
@@ -34,7 +36,7 @@ class _ContactPageState extends State<ContactPage> {
 
   String? _validateEmail(String? v) {
     if (v == null || v.trim().isEmpty) return 'Veuillez entrer un email';
-    final re = RegExp(r"^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}");
+    final re = RegExp(r"^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$");
     if (!re.hasMatch(v.trim())) return 'Email invalide';
     return null;
   }
@@ -46,38 +48,41 @@ class _ContactPageState extends State<ContactPage> {
     setState(() => _isSending = true);
 
     try {
-      await emailjs.send(
-        'service_27bhrkb',
-        'template_wve0kk9',
-        {
-          'from_name': _name.text.trim(), // Nom
-          'reply_to': _email.text.trim(), // Email
-          'message': _message.text.trim(), // Message
-        },
-        emailjs.Options(publicKey: 'jX1CBeg7sZYx1K2t_'),
+      final uri = Uri.parse('https://formsubmit.co/josephgenescar@gmail.com');
+
+      final response = await http.post(
+        uri,
+        headers: {'Content-Type': 'application/json'},
+        body: jsonEncode({
+          'name': _name.text.trim(),
+          'email': _email.text.trim(),
+          'message': _message.text.trim(),
+          '_subject': 'New message from Rivayo Tech website',
+          '_template': 'table',
+          '_captcha': 'false',
+        }),
       );
 
-      if (!mounted) return;
+      if (response.statusCode == 200) {
+        if (!mounted) return;
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Message envoyé avec succès !'),
+            backgroundColor: Colors.green,
+          ),
+        );
 
-      // Mesaj Siksè
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Message envoyé avec succès à Rivayo Tech !'),
-          backgroundColor: Colors.green,
-        ),
-      );
-
-      // Netwaye fòm nan
-      _name.clear();
-      _email.clear();
-      _message.clear();
+        _name.clear();
+        _email.clear();
+        _message.clear();
+      } else {
+        throw Exception('Erreur serveur');
+      }
     } catch (e) {
       if (!mounted) return;
-
-      // Mesaj Erè
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('Erreur lors de l\'envoi : $e'),
+          content: Text('Erreur lors de l’envoi : $e'),
           backgroundColor: Colors.red,
         ),
       );
