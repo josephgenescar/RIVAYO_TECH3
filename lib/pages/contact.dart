@@ -39,9 +39,6 @@ class _ContactPageState extends State<ContactPage> {
     return null;
   }
 
-  // MEN MODIFIKASYON POU VOYE EMAIL LA TOUT BON VRE
-  // ... tout enpòtasyon yo rete menm jan ...
-
   Future<void> _submit() async {
     final form = _formKey.currentState;
     if (form == null || !form.validate()) return;
@@ -57,7 +54,6 @@ class _ContactPageState extends State<ContactPage> {
           'from_name': _name.text.trim(),
           'reply_to': _email.text.trim(),
           'message': _message.text.trim(),
-          'name': _name.text.trim(),
         },
         const emailjs.Options(publicKey: 'jX1CBeg7sZYx1K2t_'),
       );
