@@ -49,21 +49,17 @@ class _ContactPageState extends State<ContactPage> {
     setState(() => _isSending = true);
 
     try {
-      // 2. Voye done yo
+      // Voye done yo dirèkteman
       await emailjs.send(
         'service_27bhrkb',
         'template_wve0kk9',
         {
-          'from_name': _name.text
-              .trim(), // Nou ajoute .trim() pou evite espas initil
+          'from_name': _name.text.trim(),
           'reply_to': _email.text.trim(),
           'message': _message.text.trim(),
-          'name': _name.text
-              .trim(), // NOU AJOUTE SA POU SI TEMPLATE LA TOUJOURS GEN {{name}}
+          'name': _name.text.trim(),
         },
-        const emailjs.Options(
-          publicKey: 'jX1CBeg7sZYx1K2t_', // RANPLASE SA AK PUBLIC KEY PA W LA
-        ),
+        const emailjs.Options(publicKey: 'jX1CBeg7sZYx1K2t_'),
       );
 
       if (!mounted) return;
