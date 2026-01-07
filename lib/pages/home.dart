@@ -19,21 +19,32 @@ class HomePage extends StatelessWidget {
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            const HeroSection(),
-            const SizedBox(height: 24),
-            const Padding(
+          children: const [
+            HeroSection(),
+            SizedBox(height: 24),
+
+            Padding(
               padding: EdgeInsets.symmetric(horizontal: 16),
               child: _ServicesPreview(),
             ),
-            const SizedBox(height: 32),
-            const Footer(),
+
+            SizedBox(height: 60),
+
+            // 🔥 NOUS SERVONS
+            _ClientsServedSection(),
+
+            SizedBox(height: 40),
+            Footer(),
           ],
         ),
       ),
     );
   }
 }
+
+// ======================================================
+// SERVICES
+// ======================================================
 
 class _ServicesPreview extends StatelessWidget {
   const _ServicesPreview();
@@ -44,7 +55,7 @@ class _ServicesPreview extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text('Nos Services', style: Theme.of(context).textTheme.headlineSmall),
-        SizedBox(height: 12),
+        const SizedBox(height: 12),
         Wrap(
           spacing: 12,
           runSpacing: 12,
@@ -84,6 +95,97 @@ class _ServicesPreview extends StatelessWidget {
           ],
         ),
       ],
+    );
+  }
+}
+
+// ======================================================
+// NOUS SERVONS
+// ======================================================
+
+class _ClientsServedSection extends StatelessWidget {
+  const _ClientsServedSection();
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.symmetric(vertical: 70, horizontal: 20),
+      decoration: const BoxDecoration(
+        gradient: LinearGradient(
+          colors: [Color(0xFF0F2027), Color(0xFF203A43), Color(0xFF2C5364)],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+        ),
+      ),
+      child: Column(
+        children: [
+          Text(
+            'NOUS SERVONS :',
+            style: Theme.of(context).textTheme.headlineMedium?.copyWith(
+              color: Colors.white,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          const SizedBox(height: 45),
+
+          Wrap(
+            spacing: 28,
+            runSpacing: 28,
+            alignment: WrapAlignment.center,
+            children: const [
+              _ClientCard(icon: Icons.local_pharmacy, label: 'Pharmacies'),
+              _ClientCard(icon: Icons.store, label: 'Dépôts & Commerces'),
+              _ClientCard(icon: Icons.school, label: 'Écoles'),
+              _ClientCard(
+                icon: Icons.local_hospital,
+                label: 'Cliniques & Hôpitaux',
+              ), //
+              _ClientCard(icon: Icons.hotel, label: 'Hôtels'),
+              _ClientCard(icon: Icons.church, label: 'Églises'),
+              _ClientCard(
+                icon: Icons.business,
+                label: 'Entreprises\n(petites & grandes)',
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _ClientCard extends StatelessWidget {
+  final IconData icon;
+  final String label;
+
+  const _ClientCard({required this.icon, required this.label});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: 220,
+      padding: const EdgeInsets.all(26),
+      decoration: BoxDecoration(
+        color: Colors.black.withOpacity(0.65),
+        borderRadius: BorderRadius.circular(18),
+        border: Border.all(color: const Color(0xFF00E5A0), width: 1.3),
+      ),
+      child: Column(
+        children: [
+          Icon(icon, size: 44, color: const Color(0xFF00E5A0)),
+          const SizedBox(height: 18),
+          Text(
+            label,
+            textAlign: TextAlign.center,
+            style: const TextStyle(
+              color: Colors.white,
+              fontSize: 16,
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
