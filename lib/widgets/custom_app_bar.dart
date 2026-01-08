@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   const CustomAppBar({super.key});
@@ -56,18 +57,12 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
         _navButton(context, 'À propos', '/about'),
         _navButton(context, 'Contact', '/contact'),
 
-        // --- BOUTON POU DEKLANCHE REKLAM LAN ---
+        // BOUTON SOUTENIR
         Padding(
           padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 8),
           child: ElevatedButton.icon(
-            onPressed: () {
-              // TODO: METE KÒMAND REKLAM LAN ISIT LA
-              // Pa egzanp: AdManager.showRewardedAd();
-              print("Pub deklanche pou soutni Rivayo Tech!");
-
-              _showSupportDialog(context); // Yon ti mesaj remèsiman
-            },
-            icon: const Icon(Icons.card_giftcard, size: 16),
+            onPressed: () => _showSupportOptions(context),
+            icon: const Icon(Icons.favorite, size: 16),
             label: const Text(
               "SOUTENIR",
               style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
@@ -82,7 +77,6 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
             ),
           ),
         ),
-
         const SizedBox(width: 15),
       ],
     );
@@ -102,27 +96,113 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
     );
   }
 
-  // Ti mesaj remèsiman lè yo klike sou bouton an
-  void _showSupportDialog(BuildContext context) {
+  void _showSupportOptions(BuildContext context) {
+    const Color tealRivayo = Color(0xFF00B4AD);
+
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
         backgroundColor: const Color(0xFF1A1D1E),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(20),
+          // ISIT LA NOU RANJE BORDER LA:
+          side: BorderSide(color: tealRivayo.withOpacity(0.3), width: 1),
+        ),
         title: const Text(
-          "Merci !",
-          style: TextStyle(color: Color(0xFF00B4AD)),
+          "Soutenir Rivayo Tech",
+          textAlign: TextAlign.center,
+          style: TextStyle(color: tealRivayo, fontWeight: FontWeight.bold),
         ),
-        content: const Text(
-          "Merci de soutenir Rivayo Tech. La publicité va se lancer pour nous aider à continuer à vous servir.",
-          style: TextStyle(color: Colors.white),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const Text(
+              "Chwazi yon mwayen pou ede nou grandi :",
+              textAlign: TextAlign.center,
+              style: TextStyle(color: Colors.white70, fontSize: 14),
+            ),
+            const SizedBox(height: 20),
+            _supportItem(
+              context,
+              "MonCash",
+              "48868964",
+              Icons.phone_android,
+              tealRivayo,
+            ),
+            _supportItem(
+              context,
+              "NatCash",
+              "40683108",
+              Icons.tap_and_play,
+              Colors.redAccent,
+            ),
+            _supportItem(
+              context,
+              "PayPal",
+              "josephbrunette26@gmail.com",
+              Icons.payment,
+              Colors.blueAccent,
+            ),
+            const Divider(color: Colors.white10, height: 30),
+            ListTile(
+              leading: const Icon(Icons.play_circle_fill, color: Colors.amber),
+              title: const Text(
+                "Regarder une Pub",
+                style: TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              subtitle: const Text(
+                "Soutien gratuit",
+                style: TextStyle(color: Colors.white54, fontSize: 12),
+              ),
+              onTap: () {
+                Navigator.pop(context);
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content: Text("Chargement de la publicité..."),
+                  ),
+                );
+              },
+            ),
+          ],
         ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: const Text("OK", style: TextStyle(color: Color(0xFF00B4AD))),
-          ),
-        ],
       ),
+    );
+  }
+
+  Widget _supportItem(
+    BuildContext context,
+    String title,
+    String value,
+    IconData icon,
+    Color color,
+  ) {
+    return ListTile(
+      leading: Icon(icon, color: color),
+      title: Text(
+        title,
+        style: const TextStyle(
+          color: Colors.white,
+          fontWeight: FontWeight.bold,
+        ),
+      ),
+      subtitle: Text(
+        value,
+        style: const TextStyle(color: Colors.white54, fontSize: 12),
+      ),
+      trailing: const Icon(Icons.copy, size: 18, color: Colors.white24),
+      onTap: () {
+        Clipboard.setData(ClipboardData(text: value));
+        Navigator.pop(context);
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text("$title kopye: $value"),
+            backgroundColor: const Color(0xFF00B4AD),
+          ),
+        );
+      },
     );
   }
 }
