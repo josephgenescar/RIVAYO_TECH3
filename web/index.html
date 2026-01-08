@@ -8,24 +8,23 @@
 
   <title>RIVAYO_TECH</title>
   <link rel="manifest" href="/manifest.json">
+<script src="https://cdn.unityads.unity3d.com/sdk/3.4/unityads.js"></script>
 
-  <script src="https://cdn.unityads.unity3d.com/sdk/3.4/unityads.js"></script>
-  <script>
-    const myGameId = '5867250'; 
-    const isTestMode = false;
+<script>
+  const myGameId = '4350361'; 
+  const isTestMode = true;
 
-    UnityAds.initialize(myGameId, isTestMode, {
-      onComplete: () => console.log('Unity Ads pare!'),
-      onFailed: (error, message) => console.log('Erè: ' + message)
-    });
+  // Lòd sa a bezwen SDK ki anlè a pou l mache
+  UnityAds.initialize(myGameId, isTestMode, {
+    onComplete: () => console.log('SDK Unity chaje ak siksè!'),
+    onFailed: (error, message) => console.log('SDK a gen pwoblèm: ' + message)
+  });
 
-    function afichePubUnity() {
-      UnityAds.show('Rewarded_Android', {
-        onComplete: (id) => console.log('Fini!'),
-        onFailed: (id, err, msg) => alert("Pub la pa disponib kounye a.")
-      });
-    }
-  </script>
+  function afichePubUnity() {
+    UnityAds.show('Rivayo');
+  }
+</script>
+ 
 </head>
   <!--
     If you are serving your web app in a path other than the root, change the
