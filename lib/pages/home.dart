@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import '../widgets/custom_app_bar.dart';
 import '../widgets/hero_section.dart';
-import '../widgets/service_card.dart';
 import '../widgets/footer.dart';
 
 class HomePage extends StatelessWidget {
@@ -16,11 +15,21 @@ class HomePage extends StatelessWidget {
       extendBodyBehindAppBar: true,
       appBar: const CustomAppBar(),
 
-      // --- SA A SE PATI KI RANJE PWOBLEM MENU AN ---
+      // KÒD DRAWER A KI GEN BOUTON POU SOTI
       endDrawer: Drawer(
         backgroundColor: const Color(0xFF1A1D1E),
         child: Column(
           children: [
+            // BOUTON POU FÈMEN MENU AN
+            SafeArea(
+              child: Align(
+                alignment: Alignment.topRight,
+                child: IconButton(
+                  icon: const Icon(Icons.close, color: Colors.white, size: 30),
+                  onPressed: () => Navigator.pop(context),
+                ),
+              ),
+            ),
             DrawerHeader(
               decoration: const BoxDecoration(
                 border: Border(bottom: BorderSide(color: Colors.white10)),
@@ -57,7 +66,6 @@ class HomePage extends StatelessWidget {
         ),
       ),
 
-      // --------------------------------------------
       body: Container(
         decoration: const BoxDecoration(
           gradient: LinearGradient(
@@ -72,26 +80,7 @@ class HomePage extends StatelessWidget {
             children: [
               const HeroSection(),
               const SizedBox(height: 60),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20),
-                child: Column(
-                  children: [
-                    const Text(
-                      'NOS SERVICES',
-                      style: TextStyle(
-                        color: tealRivayo,
-                        fontSize: 28,
-                        fontWeight: FontWeight.w900,
-                        letterSpacing: 2,
-                      ),
-                    ),
-                    const SizedBox(height: 10),
-                    Container(width: 80, height: 3, color: tealRivayo),
-                    const SizedBox(height: 40),
-                  ],
-                ),
-              ),
-              const SizedBox(height: 80),
+              // ... rès kòd ou a ...
               const Footer(),
             ],
           ),
@@ -100,7 +89,6 @@ class HomePage extends StatelessWidget {
     );
   }
 
-  // Ti fonksyon pou kreye liy nan menu an
   Widget _drawerItem(
     BuildContext context,
     String title,
@@ -111,11 +99,12 @@ class HomePage extends StatelessWidget {
       leading: Icon(icon, color: const Color(0xFF00B4AD)),
       title: Text(title, style: const TextStyle(color: Colors.white)),
       onTap: () {
-        Navigator.pop(context); // Fèmen menu an
-        Navigator.pushNamed(context, route); // Navige
+        Navigator.pop(context);
+        // Si nou deja sou paj la, nou pa fè anyen
+        if (ModalRoute.of(context)?.settings.name != route) {
+          Navigator.pushNamed(context, route);
+        }
       },
     );
   }
 }
-
-// Rès kòd la (_ServicesPreview, _ClientsServedSection, etc.) rete menm jan...
