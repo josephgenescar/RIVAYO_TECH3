@@ -18,120 +18,102 @@ class ServiceCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final primaryColor = color ?? Theme.of(context).colorScheme.primary;
+    // Koulè Flyers Rivayo Tech yo
+    const Color tealRivayo = Color(0xFF00B4AD);
+    const Color nwaKoleksyon = Color(0xFF1A1D1E);
+    final primaryColor = color ?? tealRivayo;
 
     return SizedBox(
-      width: 280,
+      width: 300,
       child: InkWell(
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(20),
         onTap: description == null
             ? null
-            : () {
-                showDialog(
-                  context: context,
-                  builder: (c) => AlertDialog(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                    title: Text(
-                      title,
-                      style: const TextStyle(fontWeight: FontWeight.bold),
-                    ),
-                    content: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          subtitle,
-                          style: TextStyle(
-                            color: primaryColor,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                        const SizedBox(height: 12),
-                        Text(description!, style: const TextStyle(height: 1.5)),
-                      ],
-                    ),
-                    actions: [
-                      TextButton(
-                        onPressed: () => Navigator.pop(c),
-                        child: const Text('Fermer'),
-                      ),
-                    ],
-                  ),
-                );
-              },
+            : () => _showServiceDetails(context, primaryColor),
         child: Container(
-          margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 4),
+          margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 6),
           decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(16),
-            border: Border.all(color: primaryColor.withOpacity(0.1), width: 1),
+            color: nwaKoleksyon, // Fond fonse pou style teknolojik
+            borderRadius: BorderRadius.circular(20),
+            border: Border.all(
+              color: primaryColor.withOpacity(0.3),
+              width: 1.5,
+            ),
             boxShadow: [
               BoxShadow(
-                color: Colors.black.withOpacity(0.05),
-                blurRadius: 10,
-                offset: const Offset(0, 4),
+                color: primaryColor.withOpacity(0.1),
+                blurRadius: 15,
+                spreadRadius: 2,
               ),
             ],
           ),
           child: ClipRRect(
-            borderRadius: BorderRadius.circular(16),
+            borderRadius: BorderRadius.circular(20),
             child: Stack(
               children: [
-                // --- LOGO AN BACKGROUND ---
+                // --- LOGO AN BACKGROUND (Dèyè nèt) ---
                 Positioned(
-                  bottom: -10, // Ajiste pou pozisyon an
-                  right: -10,
+                  bottom: -20,
+                  right: -20,
                   child: Opacity(
-                    opacity: 0.08, // Trè pal pou moun ka li tèks la
+                    opacity: 0.05,
                     child: Image.asset(
-                      'assets/images/imagelog.png',
-                      width: 100, // Gwosè logo a nan background lan
+                      'assets/images/logo.png', // Sèvi ak logo prensipal la
+                      width: 120,
                     ),
                   ),
                 ),
 
                 // --- KONTNI KAT LA ---
                 Padding(
-                  padding: const EdgeInsets.all(16),
-                  child: Row(
+                  padding: const EdgeInsets.all(20),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
+                      // Icône la ak yon ti glow
                       Container(
-                        padding: const EdgeInsets.all(10),
+                        padding: const EdgeInsets.all(12),
                         decoration: BoxDecoration(
-                          color: primaryColor.withOpacity(0.1),
+                          color: primaryColor.withOpacity(0.15),
                           shape: BoxShape.circle,
+                          border: Border.all(
+                            color: primaryColor.withOpacity(0.5),
+                          ),
                         ),
-                        child: Icon(icon, size: 30, color: primaryColor),
+                        child: Icon(icon, size: 32, color: primaryColor),
                       ),
-                      const SizedBox(width: 16),
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(
-                              title,
-                              style: const TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.bold,
-                                color: Color(0xFF2D3142),
-                              ),
-                            ),
-                            const SizedBox(height: 4),
-                            Text(
-                              subtitle,
-                              maxLines: 2,
-                              overflow: TextOverflow.ellipsis,
-                              style: TextStyle(
-                                fontSize: 13,
-                                color: Colors.grey[600],
-                              ),
-                            ),
-                          ],
+                      const SizedBox(height: 20),
+                      Text(
+                        title,
+                        style: const TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                          letterSpacing: 0.5,
                         ),
                       ),
+                      const SizedBox(height: 10),
+                      Text(
+                        subtitle,
+                        maxLines: 3,
+                        overflow: TextOverflow.ellipsis,
+                        style: const TextStyle(
+                          fontSize: 14,
+                          color: Colors.white70,
+                          height: 1.5,
+                        ),
+                      ),
+                      const Spacer(),
+                      // Ti flèch ki endike ka gen plis enfòmasyon
+                      if (description != null)
+                        Align(
+                          alignment: Alignment.bottomRight,
+                          child: Icon(
+                            Icons.arrow_forward_rounded,
+                            color: primaryColor,
+                            size: 20,
+                          ),
+                        ),
                     ],
                   ),
                 ),
@@ -139,6 +121,51 @@ class ServiceCard extends StatelessWidget {
             ),
           ),
         ),
+      ),
+    );
+  }
+
+  // Fonksyon pou afiche detay yo ak style nwa/teal
+  void _showServiceDetails(BuildContext context, Color primaryColor) {
+    showDialog(
+      context: context,
+      builder: (c) => AlertDialog(
+        backgroundColor: const Color(0xFF0B0D0E),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(20),
+          side: BorderSide(color: primaryColor, width: 1),
+        ),
+        title: Text(
+          title,
+          style: const TextStyle(
+            color: Colors.white,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              subtitle,
+              style: TextStyle(
+                color: primaryColor,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+            const SizedBox(height: 15),
+            Text(
+              description!,
+              style: const TextStyle(color: Colors.white70, height: 1.6),
+            ),
+          ],
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(c),
+            child: Text('OK', style: TextStyle(color: primaryColor)),
+          ),
+        ],
       ),
     );
   }

@@ -1,191 +1,219 @@
-  import 'package:flutter/material.dart';
-  import '../widgets/custom_app_bar.dart';
-  import '../widgets/hero_section.dart';
-  import '../widgets/service_card.dart';
-  import '../widgets/footer.dart';
-  import '../widgets/premium_fab.dart';
+import 'package:flutter/material.dart';
+import '../widgets/custom_app_bar.dart'; // Tcheke si non fichye a matche
+import '../widgets/hero_section.dart';
+import '../widgets/service_card.dart';
+import '../widgets/footer.dart';
+// import '../widgets/premium_fab.dart'; // Si ou genyen l toujou
 
-  class HomePage extends StatelessWidget {
-    const HomePage({super.key});
+class HomePage extends StatelessWidget {
+  const HomePage({super.key});
 
-    @override
-    Widget build(BuildContext context) {
-      return Scaffold(
-        appBar: const PreferredSize(
-          preferredSize: Size.fromHeight(64),
-          child: CustomAppBar(),
+  @override
+  Widget build(BuildContext context) {
+    // Koulè tèm Rivayo Tech
+    const Color tealRivayo = Color(0xFF00B4AD);
+    const Color nwaRivayo = Color(0xFF0B0D0E);
+
+    return Scaffold(
+      extendBodyBehindAppBar: true, // Pou CustomAppBar ka chita sou gradyan an
+      appBar: const CustomAppBar(),
+
+      // floatingActionButton: const PremiumServiceFab(),
+      body: Container(
+        // Background jeneral ki rale style Flyers la
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: [nwaRivayo, Color(0xFF162124)],
+          ),
         ),
-        floatingActionButton: const PremiumServiceFab(),
-        body: SingleChildScrollView(
+        child: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: const [
-              HeroSection(),
-              SizedBox(height: 24),
+            children: [
+              // 1. HERO SECTION (Gradyan + Slider)
+              const HeroSection(),
 
+              const SizedBox(height: 60),
+
+              // 2. NOS SERVICES
               Padding(
-                padding: EdgeInsets.symmetric(horizontal: 16),
-                child: _ServicesPreview(),
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    const Text(
+                      'NOS SERVICES',
+                      style: TextStyle(
+                        color: tealRivayo,
+                        fontSize: 28,
+                        fontWeight: FontWeight.w900,
+                        letterSpacing: 2,
+                      ),
+                    ),
+                    const SizedBox(height: 10),
+                    Container(width: 80, height: 3, color: tealRivayo),
+                    const SizedBox(height: 40),
+                    const _ServicesPreview(),
+                  ],
+                ),
               ),
 
-              SizedBox(height: 60),
+              const SizedBox(height: 80),
 
-              // 🔥 NOUS SERVONS
-              _ClientsServedSection(),
+              // 3. SEKSYON "NOUS SERVONS" (Style Flyers)
+              const _ClientsServedSection(),
 
-              SizedBox(height: 40),
-              Footer(),
+              // 4. FOOTER (Kontak & Copyright)
+              const Footer(),
             ],
           ),
         ),
-      );
-    }
+      ),
+    );
   }
+}
 
-  // ======================================================
-  // SERVICES
-  // ======================================================
+// ======================================================
+// SERVICES PREVIEW (Avèk ServiceCard modifye a)
+// ======================================================
 
-  class _ServicesPreview extends StatelessWidget {
-    const _ServicesPreview();
+class _ServicesPreview extends StatelessWidget {
+  const _ServicesPreview();
 
-    @override
-    Widget build(BuildContext context) {
-      return Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+  @override
+  Widget build(BuildContext context) {
+    return Wrap(
+      spacing: 20,
+      runSpacing: 20,
+      alignment: WrapAlignment.center,
+      children: const [
+        ServiceCard(
+          icon: Icons.phone_android,
+          title: 'Développement d\'applications',
+          subtitle: 'Solutions mobiles iOS & Android sur mesure.',
+          description:
+              'Nou kreye aplikasyon ki rapid, sekirize epi ki fasil pou kliyan ou yo sèvi.',
+        ),
+        ServiceCard(
+          icon: Icons.computer,
+          title: 'Création de logiciels',
+          subtitle: 'Logiciels de gestion pour votre entreprise.',
+          description:
+              'Sistèm gestion stock, lavant, ak pèsonèl ki adapte ak bezwen biznis ou.',
+        ),
+        ServiceCard(
+          icon: Icons.web,
+          title: 'Création de sites web',
+          subtitle: 'Sites vitrines et plateformes e-commerce.',
+          description:
+              'Prezans sou entènèt se kle siksè w. Nou fè sit ki parèt byen sou tout ekran.',
+        ),
+        ServiceCard(
+          icon: Icons.security,
+          title: 'Maintenance & Sécurité',
+          subtitle: 'Protection et monitoring de vos données.',
+          description:
+              'Nou asire sistèm ou yo toujou ap kouri san rete ak sekirite total.',
+        ),
+      ],
+    );
+  }
+}
+
+// ======================================================
+// NOUS SERVONS (Modifye ak koulè Teal Rivayo)
+// ======================================================
+
+class _ClientsServedSection extends StatelessWidget {
+  const _ClientsServedSection();
+
+  @override
+  Widget build(BuildContext context) {
+    const Color tealRivayo = Color(0xFF00B4AD);
+
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.symmetric(vertical: 80, horizontal: 20),
+      decoration: BoxDecoration(
+        color: Colors.black.withOpacity(0.3),
+        border: const Border(
+          top: BorderSide(color: Colors.white10, width: 1),
+          bottom: BorderSide(color: Colors.white10, width: 1),
+        ),
+      ),
+      child: Column(
         children: [
-          Text('Nos Services', style: Theme.of(context).textTheme.headlineSmall),
-          const SizedBox(height: 12),
+          const Text(
+            'NOUS SERVONS :',
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: 26,
+              fontWeight: FontWeight.bold,
+              letterSpacing: 2,
+            ),
+          ),
+          const SizedBox(height: 50),
           Wrap(
-            spacing: 12,
-            runSpacing: 12,
+            spacing: 25,
+            runSpacing: 25,
+            alignment: WrapAlignment.center,
             children: const [
-              ServiceCard(
-                icon: Icons.phone_android,
-                title: 'Développement d\'applications',
-                subtitle: 'Applications mobiles et web sur mesure',
-                description:
-                    'Conception d\'applications mobiles et web centrées sur l\'expérience utilisateur, la performance et la scalabilité. Nous accompagnons votre projet depuis l\'idéation jusqu\'au déploiement et au support.',
-                color: Color(0xFFFFF9C4),
+              _ClientCard(icon: Icons.local_pharmacy, label: 'Pharmacies'),
+              _ClientCard(icon: Icons.store, label: 'Dépôts & Commerces'),
+              _ClientCard(icon: Icons.school, label: 'Écoles'),
+              _ClientCard(
+                icon: Icons.local_hospital,
+                label: 'Cliniques & Hôpitaux',
               ),
-              ServiceCard(
-                icon: Icons.computer,
-                title: 'Création de logiciels',
-                subtitle: 'Logiciels métiers et solutions d\'entreprise',
-                description:
-                    'Réalisation de logiciels métiers et solutions d\'entreprise personnalisées : analyse des besoins, architecture, développement, tests et formation.',
-                color: Color(0xFFC8E6C9),
-              ),
-              ServiceCard(
-                icon: Icons.web,
-                title: 'Création de sites web',
-                subtitle: 'Sites vitrines et plateformes',
-                description:
-                    'Création de sites web responsives et optimisés pour la performance, l\'accessibilité et le SEO, avec intégrations sur mesure.',
-                color: Color(0xFFBBDEFB),
-              ),
-              ServiceCard(
-                icon: Icons.security,
-                title: 'Maintenance & Sécurité',
-                subtitle: 'Maintenance, sauvegarde et protection',
-                description:
-                    'Services de maintenance, sauvegarde, monitoring et audits de sécurité pour assurer disponibilité et protection des données.',
-                color: Color(0xFFFFCDD2),
+              _ClientCard(icon: Icons.hotel, label: 'Hôtels'),
+              _ClientCard(icon: Icons.church, label: 'Églises'),
+              _ClientCard(
+                icon: Icons.business,
+                label: 'PME & Grandes Entreprises',
               ),
             ],
           ),
         ],
-      );
-    }
+      ),
+    );
   }
+}
 
-  // ======================================================
-  // NOUS SERVONS
-  // ======================================================
+class _ClientCard extends StatelessWidget {
+  final IconData icon;
+  final String label;
 
-  class _ClientsServedSection extends StatelessWidget {
-    const _ClientsServedSection();
+  const _ClientCard({required this.icon, required this.label});
 
-    @override
-    Widget build(BuildContext context) {
-      return Container(
-        width: double.infinity,
-        padding: const EdgeInsets.symmetric(vertical: 70, horizontal: 20),
-        decoration: const BoxDecoration(
-          gradient: LinearGradient(
-            colors: [Color(0xFF0F2027), Color(0xFF203A43), Color(0xFF2C5364)],
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
+  @override
+  Widget build(BuildContext context) {
+    const Color tealRivayo = Color(0xFF00B4AD);
+
+    return Container(
+      width: 180,
+      padding: const EdgeInsets.all(25),
+      decoration: BoxDecoration(
+        color: const Color(0xFF1A1D1E),
+        borderRadius: BorderRadius.circular(15),
+        border: Border.all(color: tealRivayo.withOpacity(0.3), width: 1),
+      ),
+      child: Column(
+        children: [
+          Icon(icon, size: 40, color: tealRivayo),
+          const SizedBox(height: 15),
+          Text(
+            label,
+            textAlign: TextAlign.center,
+            style: const TextStyle(
+              color: Colors.white,
+              fontSize: 14,
+              fontWeight: FontWeight.w500,
+            ),
           ),
-        ),
-        child: Column(
-          children: [
-            Text(
-              'NOUS SERVONS :',
-              style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                color: Colors.white,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            const SizedBox(height: 45),
-
-            Wrap(
-              spacing: 28,
-              runSpacing: 28,
-              alignment: WrapAlignment.center,
-              children: const [
-                _ClientCard(icon: Icons.local_pharmacy, label: 'Pharmacies'),
-                _ClientCard(icon: Icons.store, label: 'Dépôts & Commerces'),
-                _ClientCard(icon: Icons.school, label: 'Écoles'),
-                _ClientCard(
-                  icon: Icons.local_hospital,
-                  label: 'Cliniques & Hôpitaux',
-                ), //
-                _ClientCard(icon: Icons.hotel, label: 'Hôtels'),
-                _ClientCard(icon: Icons.church, label: 'Églises'),
-                _ClientCard(
-                  icon: Icons.business,
-                  label: 'Entreprises\n(petites & grandes)',
-                ),
-              ],
-            ),
-          ],
-        ),
-      );
-    }
+        ],
+      ),
+    );
   }
-
-  class _ClientCard extends StatelessWidget {
-    final IconData icon;
-    final String label;
-
-    const _ClientCard({required this.icon, required this.label});
-
-    @override
-    Widget build(BuildContext context) {
-      return Container(
-        width: 220,
-        padding: const EdgeInsets.all(26),
-        decoration: BoxDecoration(
-          color: Colors.black.withOpacity(0.65),
-          borderRadius: BorderRadius.circular(18),
-          border: Border.all(color: const Color(0xFF00E5A0), width: 1.3),
-        ),
-        child: Column(
-          children: [
-            Icon(icon, size: 44, color: const Color(0xFF00E5A0)),
-            const SizedBox(height: 18),
-            Text(
-              label,
-              textAlign: TextAlign.center,
-              style: const TextStyle(
-                color: Colors.white,
-                fontSize: 16,
-                fontWeight: FontWeight.w500,
-              ),
-            ),
-          ],
-        ),
-      );
-    }
-  }
+}

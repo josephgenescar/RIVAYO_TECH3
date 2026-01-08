@@ -4,72 +4,80 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   const CustomAppBar({super.key});
 
   @override
-  Size get preferredSize => const Size.fromHeight(90);
+  Size get preferredSize => const Size.fromHeight(80); // Redui yon ti kras pou l pi elegant
 
   @override
   Widget build(BuildContext context) {
-    Image.asset(
-      'assets/images/logo.png',
-      width: 64,
-      height: 60,
-      fit: BoxFit.contain,
-      errorBuilder: (context, error, stackTrace) => Container(
-        width: 64,
-        height: 60,
-        decoration: BoxDecoration(
-          color: const Color.fromARGB(60, 230, 170, 170),
-          shape: BoxShape.circle,
-        ),
-      ),
-    );
+    // Koulè vè teal Rivayo a
+    const Color tealRivayo = Color(0xFF00B4AD);
 
     return AppBar(
-      backgroundColor: const Color.fromARGB(255, 106, 165, 242),
-      centerTitle: true,
+      // Nou mete l transparans pou gradyan ki nan background nan ka parèt
+      backgroundColor: Colors.transparent,
       elevation: 0,
+      centerTitle: false, // Nou mete l false pou logo a ka sou bò gòch
 
-      title: SizedBox(
-        height: 260,
-        width: 260,
-        child: Center(
-          child: Image.asset(
-            'assets/images/logo.png',
-            height: 100,
-            fit: BoxFit.contain,
-            errorBuilder: (context, error, stackTrace) => Container(
-              width: 150,
-              height: 150,
-              decoration: BoxDecoration(
-                color: const Color.fromARGB(60, 230, 170, 170),
-                shape: BoxShape.circle,
+      title: Padding(
+        padding: const EdgeInsets.only(top: 10),
+        child: Row(
+          children: [
+            // LOGO RIVAYO
+            Image.asset(
+              'assets/images/logo.png',
+              height: 50,
+              fit: BoxFit.contain,
+              errorBuilder: (context, error, stackTrace) => Container(
+                width: 40,
+                height: 40,
+                decoration: const BoxDecoration(
+                  color: tealRivayo,
+                  shape: BoxShape.circle,
+                ),
+                child: const Icon(
+                  Icons.business,
+                  color: Colors.white,
+                  size: 20,
+                ),
               ),
             ),
-          ),
+            const SizedBox(width: 10),
+            // TEKS RIVAYO TECH
+            const Text(
+              'RIVAYO TECH',
+              style: TextStyle(
+                color: Colors.white,
+                fontWeight: FontWeight.bold,
+                fontSize: 18,
+                letterSpacing: 1.2,
+              ),
+            ),
+          ],
         ),
       ),
+
       actions: [
-        TextButton(
-          onPressed: () => Navigator.pushNamed(context, '/'),
-          child: const Text('Accueil', style: TextStyle(color: Colors.white)),
-        ),
-        TextButton(
-          onPressed: () => Navigator.pushNamed(context, '/services'),
-          child: const Text('Services', style: TextStyle(color: Colors.white)),
-        ),
-        TextButton(
-          onPressed: () => Navigator.pushNamed(context, '/projects'),
-          child: const Text('Projets', style: TextStyle(color: Colors.white)),
-        ),
-        TextButton(
-          onPressed: () => Navigator.pushNamed(context, '/about'),
-          child: const Text('À propos', style: TextStyle(color: Colors.white)),
-        ),
-        TextButton(
-          onPressed: () => Navigator.pushNamed(context, '/contact'),
-          child: const Text('Contact', style: TextStyle(color: Colors.white)),
-        ),
-        const SizedBox(width: 8),
+        _navButton(context, 'Accueil', '/'),
+        _navButton(context, 'Services', '/services'),
+        _navButton(context, 'Projets', '/projects'),
+        _navButton(context, 'À propos', '/about'),
+        _navButton(context, 'Contact', '/contact'),
+        const SizedBox(width: 15),
       ],
+    );
+  }
+
+  // Ti fonksyon pou bouton navigasyon yo pwofesyonèl
+  Widget _navButton(BuildContext context, String text, String route) {
+    return TextButton(
+      onPressed: () => Navigator.pushNamed(context, route),
+      style: TextButton.styleFrom(
+        foregroundColor: Colors.white,
+        padding: const EdgeInsets.symmetric(horizontal: 12),
+      ),
+      child: Text(
+        text,
+        style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
+      ),
     );
   }
 }
