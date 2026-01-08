@@ -70,6 +70,42 @@
       }
     });
   }
-</script>
+</script></head>  <body>
+  <script src="main.dart.js" type="application/javascript"></script>
+
+  <body>
+  <script src="flutter_bootstrap.js" async></script>
+
+  <script src="https://web-bridge.is.com/sdk/v1/bundle.js" onerror="console.error('SDK bloke oswa pa jwenn')"></script>
+
+  <script>
+    // Fonksyon inisyalizasyon
+    window.addEventListener('load', function() {
+      // Nou tcheke si bridge la la anvan nou fè anyen
+      if (window.isWebBridge) {
+        isWebBridge.init({
+          appKey: '4350361',
+          onSuccess: () => console.log('LevelPlay pare!'),
+          onFail: (err) => console.log('Init fail: ' + err.message)
+        });
+      }
+    });
+
+    // Fonksyon Flutter rele a
+    async function afichePubUnity(userId) {
+      if (!window.isWebBridge) {
+        console.error("SDK pa chaje");
+        return false;
+      }
+      return new Promise((resolve) => {
+        isWebBridge.showRewardedVideo({
+          placementName: 'Soutien_Video',
+          onComplete: () => resolve(true),
+          onFailed: (err) => resolve(false)
+        });
+      });
+    }
+  </script>
+</body>
 </body>
 </html>
