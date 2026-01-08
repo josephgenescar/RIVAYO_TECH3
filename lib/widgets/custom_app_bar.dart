@@ -4,24 +4,20 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   const CustomAppBar({super.key});
 
   @override
-  Size get preferredSize => const Size.fromHeight(80); // Redui yon ti kras pou l pi elegant
+  Size get preferredSize => const Size.fromHeight(80);
 
   @override
   Widget build(BuildContext context) {
-    // Koulè vè teal Rivayo a
     const Color tealRivayo = Color(0xFF00B4AD);
 
     return AppBar(
-      // Nou mete l transparans pou gradyan ki nan background nan ka parèt
       backgroundColor: Colors.transparent,
       elevation: 0,
-      centerTitle: false, // Nou mete l false pou logo a ka sou bò gòch
-
+      centerTitle: false,
       title: Padding(
         padding: const EdgeInsets.only(top: 10),
         child: Row(
           children: [
-            // LOGO RIVAYO
             Image.asset(
               'assets/images/logo.png',
               height: 50,
@@ -41,7 +37,6 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
               ),
             ),
             const SizedBox(width: 10),
-            // TEKS RIVAYO TECH
             const Text(
               'RIVAYO TECH',
               style: TextStyle(
@@ -54,19 +49,45 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
           ],
         ),
       ),
-
       actions: [
         _navButton(context, 'Accueil', '/'),
         _navButton(context, 'Services', '/services'),
         _navButton(context, 'Projets', '/projects'),
         _navButton(context, 'À propos', '/about'),
         _navButton(context, 'Contact', '/contact'),
+
+        // --- BOUTON POU DEKLANCHE REKLAM LAN ---
+        Padding(
+          padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 8),
+          child: ElevatedButton.icon(
+            onPressed: () {
+              // TODO: METE KÒMAND REKLAM LAN ISIT LA
+              // Pa egzanp: AdManager.showRewardedAd();
+              print("Pub deklanche pou soutni Rivayo Tech!");
+
+              _showSupportDialog(context); // Yon ti mesaj remèsiman
+            },
+            icon: const Icon(Icons.card_giftcard, size: 16),
+            label: const Text(
+              "SOUTENIR",
+              style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
+            ),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: tealRivayo,
+              foregroundColor: Colors.white,
+              padding: const EdgeInsets.symmetric(horizontal: 12),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(20),
+              ),
+            ),
+          ),
+        ),
+
         const SizedBox(width: 15),
       ],
     );
   }
 
-  // Ti fonksyon pou bouton navigasyon yo pwofesyonèl
   Widget _navButton(BuildContext context, String text, String route) {
     return TextButton(
       onPressed: () => Navigator.pushNamed(context, route),
@@ -77,6 +98,30 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
       child: Text(
         text,
         style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
+      ),
+    );
+  }
+
+  // Ti mesaj remèsiman lè yo klike sou bouton an
+  void _showSupportDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        backgroundColor: const Color(0xFF1A1D1E),
+        title: const Text(
+          "Merci !",
+          style: TextStyle(color: Color(0xFF00B4AD)),
+        ),
+        content: const Text(
+          "Merci de soutenir Rivayo Tech. La publicité va se lancer pour nous aider à continuer à vous servir.",
+          style: TextStyle(color: Colors.white),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text("OK", style: TextStyle(color: Color(0xFF00B4AD))),
+          ),
+        ],
       ),
     );
   }
