@@ -20,8 +20,8 @@
 
   function afichePubUnity() {
     if (typeof UnityAds !== 'undefined') {
-      // Sèvi ak non Ad Unit Web ou pral kreye a (ex: 'Rivayo')
-      UnityAds.show('Reward_web', {
+      // Sèvi ak non Ad Unit Web ou pral kreye a (ex: 'Soutien_Video')
+      UnityAds.show('Soutien_Video', {
         onComplete: (id) => console.log('Fini!'),
         onFailed: (id, err, msg) => alert("Unity Ads: " + msg)
       });
