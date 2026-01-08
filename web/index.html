@@ -3,6 +3,30 @@
 <head>
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3551199857779767"
      crossorigin="anonymous"></script>
+
+    <link rel="icon" type="image/png" href="favicon-32x32.png"/>
+
+  <title>RIVAYO_TECH</title>
+  <link rel="manifest" href="/manifest.json">
+
+  <script src="https://cdn.unityads.unity3d.com/sdk/3.4/unityads.js"></script>
+  <script>
+    const myGameId = '5867250'; 
+    const isTestMode = false;
+
+    UnityAds.initialize(myGameId, isTestMode, {
+      onComplete: () => console.log('Unity Ads pare!'),
+      onFailed: (error, message) => console.log('Erè: ' + message)
+    });
+
+    function afichePubUnity() {
+      UnityAds.show('Rewarded_Android', {
+        onComplete: (id) => console.log('Fini!'),
+        onFailed: (id, err, msg) => alert("Pub la pa disponib kounye a.")
+      });
+    }
+  </script>
+</head>
   <!--
     If you are serving your web app in a path other than the root, change the
     href value below to reflect the base path you are serving from.
