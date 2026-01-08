@@ -57,7 +57,7 @@ class Footer extends StatelessWidget {
               ),
               _contactItem(
                 Icons.email,
-                "rivayo003@gmail.com",
+                "josephgenescar@gmail.com",
                 tealRivayo,
                 context,
               ),
