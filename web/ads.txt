@@ -1,3 +1,6 @@
  unityads.com, 3278855, DIRECT, 244199c43c246f40  
 google.com, pub-3551199857779767, DIRECT, f08c47fec0942fa0
 
+ironsource.com, 3278855, DIRECT, c0e35123d9178121
+ssacdn.com, 3278855, DIRECT, c0e35123d9178121
+
