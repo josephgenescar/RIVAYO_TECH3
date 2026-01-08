@@ -6,7 +6,7 @@
   <meta content="IE=Edge" http-equiv="X-UA-Compatible">
   <meta name="description" content="RIVAYO TECH — solutions numériques.">
 
-  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
   <meta name="apple-mobile-web-app-title" content="RIVAYO_TECH">
   <link rel="apple-touch-icon" href="icons/Icon-192(2).png">
@@ -15,53 +15,46 @@
   <title>RIVAYO_TECH</title>
   <link rel="manifest" href="manifest.json">
 
-  <script src="https://cdn.unityads.unity3d.com/sdk/4.0/unityads.js"></script>
+ <script src="https://platform.ironsrc.com/sdk/js/v1/ironsource.js"></script>
 
-  <script>
-    const myGameId = '4350361';
-    const isTestMode = true; 
-
-    window.addEventListener('load', function() {
-      if (typeof UnityAds !== 'undefined') {
-        UnityAds.initialize(myGameId, isTestMode, {
-          onComplete: () => console.log('SDK Unity pare!'),
-          onFailed: (error, message) => console.log('Unity Init Failed: ' + message)
-        });
-      }
+<script>
+  // Inisyalize LevelPlay ak App Key ou
+  const appKey = '4350361'; // Tcheke si se App Key sa a nan Dashboard la
+  
+  window.addEventListener('load', function() {
+    IronSource.init({
+      appKey: appKey,
+      userId: 'user_unique_id', // Ou ka mete yon ID pou chak itilizatè
+      onSuccess: () => console.log('LevelPlay pare!'),
+      onFail: (err) => console.log('Erè LevelPlay: ' + err.message)
     });
+  });
 
-    async function afichePubUnity() {
-      return new Promise((resolve) => {
-        if (typeof UnityAds === 'undefined') { resolve(false); return; }
-        const safetyTimeout = setTimeout(() => resolve(false), 10000);
-        try {
-          UnityAds.show('Soutien_Video', {
-            onComplete: (id) => { clearTimeout(safetyTimeout); resolve(true); },
-            onFailed: (id, err, msg) => { clearTimeout(safetyTimeout); resolve(false); }
-          });
-        } catch (e) { clearTimeout(safetyTimeout); resolve(false); }
-      });
-    }
+  async function afichePubUnity() {
+    // LevelPlay ap chwazi pi bon piblisite a (Unity oswa IronSource)
+    IronSource.showRewardedVideo('Rewarded_Android_Bidding'); 
+  } 
   </script>
 
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3551199857779767" crossorigin="anonymous"></script>
 </head>
 <body>
-  
   <script src="flutter_bootstrap.js" async></script>
 
   <script>
-    // Ti jounal pou swiv si Service Worker la ap bay pwoblèm
-    if ('serviceWorker' in navigator) {
-      window.addEventListener('load', function() {
-        navigator.serviceWorker.register('/flutter_service_worker.js?v={{flutter_service_worker_version}}')
+    // Sistèm pou fòse chajman si Service Worker la dousman
+    window.addEventListener('load', function() {
+      if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('flutter_service_worker.js?v={{flutter_service_worker_version}}', {
+          timeout: 10000 // Nou bay SW a 10 segonn olye de 4 segonn
+        })
         .then(function(reg) {
-          console.log('Service Worker pare.');
+          console.log('Service Worker anrejistre.');
         }).catch(function(err) {
-          console.warn('Service Worker pa chaje, men Flutter ap kontinye kanmenm...');
+          console.warn('Service Worker dousman, Flutter ap kontinye...');
         });
-      });
-    }
+      }
+    });
   </script>
 </body>
 </html>
