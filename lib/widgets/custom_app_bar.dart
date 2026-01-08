@@ -1,12 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'dart:js' as js;
+import 'dart:math'; // Pou jenere yon ID o aza
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   const CustomAppBar({super.key});
 
   @override
   Size get preferredSize => const Size.fromHeight(80);
+
+  // Ti fonksyon pou kreye yon UserID o aza pou Unity ka aksepte piblisite a
+  String _getOrCreateUserId() {
+    var random = Random();
+    return 'user_${random.nextInt(1000000)}';
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -77,10 +84,8 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
           ),
         ),
 
-        // MODIFIKASYON POU MENU A
         if (isMobile)
           Builder(
-            // Builder a enpòtan pou l ka jwenn Scaffold la
             builder: (context) => IconButton(
               icon: const Icon(Icons.menu, color: Colors.white),
               onPressed: () => Scaffold.of(context).openEndDrawer(),
@@ -139,6 +144,8 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
               const Color(0xFF003087),
             ),
             const Divider(color: Colors.white10),
+
+            // LÈ OU KLIKE SOU "REGARDER UNE PUB"
             ListTile(
               leading: const CircleAvatar(
                 backgroundColor: Colors.amber,
@@ -153,7 +160,16 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
               ),
               onTap: () {
                 Navigator.pop(context);
-                js.context.callMethod('afichePubUnity');
+
+                // NOU RELE JS LA AK YON ID INIK
+                String userId = _getOrCreateUserId();
+                print("Rele piblisite pou: $userId");
+
+                try {
+                  js.context.callMethod('afichePubUnity', [userId]);
+                } catch (e) {
+                  print("Erè JavaScript: $e");
+                }
               },
             ),
           ],
