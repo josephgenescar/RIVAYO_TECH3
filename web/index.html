@@ -15,46 +15,61 @@
   <title>RIVAYO_TECH</title>
   <link rel="manifest" href="manifest.json">
 
- <script src="https://platform.ironsrc.com/sdk/js/v1/ironsource-levelplay.js"></script>
+ <script src="https://platform.ironsrc.com/sdk/js/v1/ironsource.js"></script>
 
 <script>
-  // Inisyalize LevelPlay ak App Key ou
-  const appKey = '4350361'; // Tcheke si se App Key sa a nan Dashboard la
-  
-  window.addEventListener('load', function() {
-    IronSource.init({
-      appKey: appKey,
-      userId: 'user_unique_id', // Ou ka mete yon ID pou chak itilizatè
-      onSuccess: () => console.log('LevelPlay pare!'),
-      onFail: (err) => console.log('Erè LevelPlay: ' + err.message)
-    });
-  });
+  // Nou itilize "ironSource" (ti 'i') paske se sa SDK a itilize sou Web
+  const myAppKey = '4350361'; 
 
-  async function afichePubUnity() {
-    // LevelPlay ap chwazi pi bon piblisite a (Unity oswa IronSource)
-    IronSource.showRewardedVideo('Rewarded_Android_Bidding'); 
-  } 
-  </script>
+  function initLevelPlay() {
+    if (window.ironSource) {
+      window.ironSource.init({
+        appKey: myAppKey,
+        onSuccess: () => console.log('LevelPlay inisyalize ak siksè!'),
+        onFail: (err) => console.error('Erè Inisyalizasyon:', err)
+      });
+    } else {
+      console.error('SDK a poko chaje. Verifye koneksyon ou oswa AdBlocker.');
+    }
+  }
 
-  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3551199857779767" crossorigin="anonymous"></script>
-</head>
-<body>
-  <script src="flutter_bootstrap.js" async></script>
+  // Tcheke chak dezyèm si SDK a parèt
+  let checkSDK = setInterval(() => {
+    if (window.ironSource) {
+      initLevelPlay();
+      clearInterval(checkSDK);
+    }
+  }, 1000);
 
-  <script>
-    // Sistèm pou fòse chajman si Service Worker la dousman
-    window.addEventListener('load', function() {
-      if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.register('flutter_service_worker.js?v={{flutter_service_worker_version}}', {
-          timeout: 10000 // Nou bay SW a 10 segonn olye de 4 segonn
-        })
-        .then(function(reg) {
-          console.log('Service Worker anrejistre.');
-        }).catch(function(err) {
-          console.warn('Service Worker dousman, Flutter ap kontinye...');
+  async function afichePubUnity(flutterUserId) {
+    return new Promise((resolve) => {
+      if (!window.ironSource) {
+        console.error("SDK IronSource manke!");
+        resolve(false);
+        return;
+      }
+
+      try {
+        // Nou pase ID ki soti nan Flutter a
+        window.ironSource.setUserId(flutterUserId);
+        
+        window.ironSource.showRewardedVideo({
+          placementName: 'Soutien_Video',
+          onComplete: () => {
+            console.log("Piblisite fini!");
+            resolve(true);
+          },
+          onFailed: (err) => {
+            console.error("Piblisite echwe:", err);
+            resolve(false);
+          }
         });
+      } catch (e) {
+        console.error("Erè teknik:", e);
+        resolve(false);
       }
     });
-  </script>
+  }
+</script>
 </body>
 </html>
