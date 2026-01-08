@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'dart:js' as js;
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   const CustomAppBar({super.key});
@@ -10,74 +11,88 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     const Color tealRivayo = Color(0xFF00B4AD);
+    // Nou tcheke lajè ekran an pou nou konnen si se yon telefòn
+    double screenWidth = MediaQuery.of(context).size.width;
+    bool isMobile = screenWidth < 800;
 
     return AppBar(
-      backgroundColor: Colors.transparent,
-      elevation: 0,
+      backgroundColor: const Color(0xFF1A1D1E), // Yon ti nwa pwofesyonèl
+      elevation: 2,
       centerTitle: false,
       title: Padding(
-        padding: const EdgeInsets.only(top: 10),
-        child: Row(
-          children: [
-            Image.asset(
-              'assets/images/logo.png',
-              height: 50,
-              fit: BoxFit.contain,
-              errorBuilder: (context, error, stackTrace) => Container(
-                width: 40,
-                height: 40,
-                decoration: const BoxDecoration(
+        padding: const EdgeInsets.only(top: 5),
+        child: InkWell(
+          onTap: () => Navigator.pushNamed(context, '/'),
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              // Logo ak sekirite pou l pa janm disparèt
+              Image.asset(
+                'assets/images/logo.png',
+                height: isMobile ? 35 : 45,
+                fit: BoxFit.contain,
+                errorBuilder: (context, error, stackTrace) => const Icon(
+                  Icons.bolt, // Yon ikon "Tech" si logo a gen pwoblèm
                   color: tealRivayo,
-                  shape: BoxShape.circle,
-                ),
-                child: const Icon(
-                  Icons.business,
-                  color: Colors.white,
-                  size: 20,
+                  size: 30,
                 ),
               ),
-            ),
-            const SizedBox(width: 10),
-            const Text(
-              'RIVAYO TECH',
-              style: TextStyle(
-                color: Colors.white,
-                fontWeight: FontWeight.bold,
-                fontSize: 18,
-                letterSpacing: 1.2,
-              ),
-            ),
-          ],
+              if (!isMobile) ...[
+                const SizedBox(width: 12),
+                const Text(
+                  'RIVAYO TECH',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.w900,
+                    fontSize: 18,
+                    letterSpacing: 1.5,
+                  ),
+                ),
+              ],
+            ],
+          ),
         ),
       ),
       actions: [
-        _navButton(context, 'Accueil', '/'),
-        _navButton(context, 'Services', '/services'),
-        _navButton(context, 'Projets', '/projects'),
-        _navButton(context, 'À propos', '/about'),
-        _navButton(context, 'Contact', '/contact'),
+        // Si se pa mobil, nou montre tout bouton yo
+        if (!isMobile) ...[
+          _navButton(context, 'Accueil', '/'),
+          _navButton(context, 'Services', '/services'),
+          _navButton(context, 'Projets', '/projects'),
+          _navButton(context, 'À propos', '/about'),
+          _navButton(context, 'Contact', '/contact'),
+        ],
 
-        // BOUTON SOUTENIR
+        // BOUTON SOUTENIR (Toujou vizib)
         Padding(
-          padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 8),
+          padding: const EdgeInsets.symmetric(vertical: 18, horizontal: 8),
           child: ElevatedButton.icon(
             onPressed: () => _showSupportOptions(context),
-            icon: const Icon(Icons.favorite, size: 16),
-            label: const Text(
-              "SOUTENIR",
-              style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
+            icon: const Icon(Icons.volunteer_activism, size: 16),
+            label: Text(
+              isMobile ? "AIDER" : "SOUTENIR",
+              style: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
             ),
             style: ElevatedButton.styleFrom(
               backgroundColor: tealRivayo,
               foregroundColor: Colors.white,
-              padding: const EdgeInsets.symmetric(horizontal: 12),
+              elevation: 5,
+              padding: const EdgeInsets.symmetric(horizontal: 15),
               shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(20),
+                borderRadius: BorderRadius.circular(30),
               ),
             ),
           ),
         ),
-        const SizedBox(width: 15),
+
+        // Si se mobil, nou ka ajoute yon Menu Hamburger isit la si w vle
+        if (isMobile)
+          IconButton(
+            icon: const Icon(Icons.menu, color: Colors.white),
+            onPressed: () => Scaffold.of(context).openEndDrawer(),
+          ),
+
+        const SizedBox(width: 10),
       ],
     );
   }
@@ -86,12 +101,12 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
     return TextButton(
       onPressed: () => Navigator.pushNamed(context, route),
       style: TextButton.styleFrom(
-        foregroundColor: Colors.white,
-        padding: const EdgeInsets.symmetric(horizontal: 12),
+        foregroundColor: Colors.white70,
+        padding: const EdgeInsets.symmetric(horizontal: 15),
       ),
       child: Text(
-        text,
-        style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
+        text.toUpperCase(),
+        style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w600),
       ),
     );
   }
@@ -104,69 +119,90 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
       builder: (context) => AlertDialog(
         backgroundColor: const Color(0xFF1A1D1E),
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(20),
-          // ISIT LA NOU RANJE BORDER LA:
-          side: BorderSide(color: tealRivayo.withOpacity(0.3), width: 1),
+          borderRadius: BorderRadius.circular(25),
+          side: BorderSide(color: tealRivayo.withOpacity(0.5), width: 1.5),
         ),
-        title: const Text(
-          "Soutenir Rivayo Tech",
-          textAlign: TextAlign.center,
-          style: TextStyle(color: tealRivayo, fontWeight: FontWeight.bold),
-        ),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
+        title: Column(
           children: [
+            Icon(Icons.favorite, color: tealRivayo, size: 40),
+            const SizedBox(height: 10),
             const Text(
-              "Chwazi yon mwayen pou ede nou grandi :",
+              "Soutenir Rivayo Tech",
               textAlign: TextAlign.center,
-              style: TextStyle(color: Colors.white70, fontSize: 14),
-            ),
-            const SizedBox(height: 20),
-            _supportItem(
-              context,
-              "MonCash",
-              "48868964",
-              Icons.phone_android,
-              tealRivayo,
-            ),
-            _supportItem(
-              context,
-              "NatCash",
-              "40683108",
-              Icons.tap_and_play,
-              Colors.redAccent,
-            ),
-            _supportItem(
-              context,
-              "PayPal",
-              "josephbrunette26@gmail.com",
-              Icons.payment,
-              Colors.blueAccent,
-            ),
-            const Divider(color: Colors.white10, height: 30),
-            ListTile(
-              leading: const Icon(Icons.play_circle_fill, color: Colors.amber),
-              title: const Text(
-                "Regarder une Pub",
-                style: TextStyle(
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold,
-                ),
+              style: TextStyle(
+                color: Colors.white,
+                fontWeight: FontWeight.bold,
               ),
-              subtitle: const Text(
-                "Soutien gratuit",
-                style: TextStyle(color: Colors.white54, fontSize: 12),
-              ),
-              onTap: () {
-                Navigator.pop(context);
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(
-                    content: Text("Chargement de la publicité..."),
-                  ),
-                );
-              },
             ),
           ],
+        ),
+        content: SingleChildScrollView(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const Text(
+                "Chwazi yon opsyon pou ede nou avanse",
+                style: TextStyle(color: Colors.white60, fontSize: 13),
+              ),
+              const SizedBox(height: 25),
+
+              // MONCASH
+              _supportItem(
+                context,
+                "MonCash",
+                "48868964",
+                Icons.account_balance_wallet,
+                const Color(0xFFE21217), // Wouj MonCash
+              ),
+
+              // NATCASH
+              _supportItem(
+                context,
+                "NatCash",
+                "40683108",
+                Icons.payments,
+                const Color(0xFF00A19B), // Teal NatCash
+              ),
+
+              // PAYPAL
+              _supportItem(
+                context,
+                "PayPal",
+                "josephbrunette26@gmail.com",
+                Icons.paypal,
+                const Color(0xFF003087), // Blue PayPal
+              ),
+
+              const Padding(
+                padding: EdgeInsets.symmetric(vertical: 15),
+                child: Divider(color: Colors.white10),
+              ),
+
+              // PUB UNITY
+              ListTile(
+                contentPadding: const EdgeInsets.symmetric(horizontal: 10),
+                leading: const CircleAvatar(
+                  backgroundColor: Colors.amber,
+                  child: Icon(Icons.play_arrow, color: Colors.black),
+                ),
+                title: const Text(
+                  "Regarder une Pub",
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                subtitle: const Text(
+                  "Soutien gratuit (Unity Ads)",
+                  style: TextStyle(color: Colors.white54, fontSize: 11),
+                ),
+                onTap: () {
+                  Navigator.pop(context);
+                  js.context.callMethod('afichePubUnity');
+                },
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -179,30 +215,40 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
     IconData icon,
     Color color,
   ) {
-    return ListTile(
-      leading: Icon(icon, color: color),
-      title: Text(
-        title,
-        style: const TextStyle(
-          color: Colors.white,
-          fontWeight: FontWeight.bold,
-        ),
+    return Container(
+      margin: const EdgeInsets.only(bottom: 12),
+      decoration: BoxDecoration(
+        color: Colors.white.withOpacity(0.03),
+        borderRadius: BorderRadius.circular(15),
+        border: Border.all(color: color.withOpacity(0.2)),
       ),
-      subtitle: Text(
-        value,
-        style: const TextStyle(color: Colors.white54, fontSize: 12),
-      ),
-      trailing: const Icon(Icons.copy, size: 18, color: Colors.white24),
-      onTap: () {
-        Clipboard.setData(ClipboardData(text: value));
-        Navigator.pop(context);
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text("$title kopye: $value"),
-            backgroundColor: const Color(0xFF00B4AD),
+      child: ListTile(
+        leading: Icon(icon, color: color),
+        title: Text(
+          title,
+          style: const TextStyle(
+            color: Colors.white,
+            fontWeight: FontWeight.bold,
+            fontSize: 14,
           ),
-        );
-      },
+        ),
+        subtitle: Text(
+          value,
+          style: const TextStyle(color: Colors.white54, fontSize: 11),
+        ),
+        trailing: const Icon(Icons.copy, size: 16, color: Colors.white24),
+        onTap: () {
+          Clipboard.setData(ClipboardData(text: value));
+          Navigator.pop(context);
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text("$title kopye!"),
+              backgroundColor: color,
+              behavior: SnackBarBehavior.floating,
+            ),
+          );
+        },
+      ),
     );
   }
 }
