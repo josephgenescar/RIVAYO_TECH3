@@ -1,72 +1,75 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <link rel="manifest" href="/manifest.json">
-<script src="https://cdn.unityads.unity3d.com/sdk/3.4/unityads.js"></script>
+  <link rel="manifest" href="/manifest.json">
+  
+  <script src="https://cdn.unityads.unity3d.com/sdk/4.0/unityads.js"></script>
 
-<script>
-  // Sa a ap tann paj la chaje nèt pou liy wouj la ka disparèt
-  window.addEventListener('load', function() {
-    const myGameId = '4350361'; 
-    const isTestMode = true;
+  <script>
+    // 1. Nou defini enfòmasyon yo anlè a
+    const myGameId = '4350361'; // Sa a se Game ID ou
+    const isTestMode = true; // Mete l sou 'false' lè w pral pibliye l nèt
 
-    if (typeof UnityAds !== 'undefined') {
-      UnityAds.initialize(myGameId, isTestMode, {
-        onComplete: () => console.log('SDK Unity pare kounye a!'),
-        onFailed: (error, message) => console.log('Erè: ' + message)
+    // 2. Inisyalizasyon otomatik lè paj la chaje
+    window.addEventListener('load', function() {
+      if (typeof UnityAds !== 'undefined') {
+        UnityAds.initialize(myGameId, isTestMode, {
+          onComplete: () => console.log('SDK Unity pare kounye a!'),
+          onFailed: (error, message) => console.log('Unity Init Failed: ' + message)
+        });
+      }
+    });
+
+    // 3. Fonksyon ki modifye pou anpeche blokaj (Asynchronous Safe)
+    async function afichePubUnity() {
+      console.log("Ap chèche piblisite Unity...");
+      
+      return new Promise((resolve) => {
+        if (typeof UnityAds === 'undefined') {
+          console.error("UnityAds pa enstale sou paj la");
+          resolve(false);
+          return;
+        }
+
+        // Timeout 10 segonn pou si pub la bloke, Flutter pa plante
+        const safetyTimeout = setTimeout(() => {
+          console.warn("Unity Ads Timeout");
+          resolve(false);
+        }, 10000);
+
+        try {
+          UnityAds.show('Soutien_Video', { // ID ou kreye nan Unity a
+            onComplete: (id) => {
+              clearTimeout(safetyTimeout);
+              console.log('Piblisite fini!');
+              resolve(true);
+            },
+            onFailed: (id, err, msg) => {
+              clearTimeout(safetyTimeout);
+              console.error("Unity Ads Failed: " + msg);
+              resolve(false);
+            }
+          });
+        } catch (e) {
+          clearTimeout(safetyTimeout);
+          resolve(false);
+        }
       });
     }
-  });
+  </script>
 
-  function afichePubUnity() {
-    if (typeof UnityAds !== 'undefined') {
-      // Sèvi ak non Ad Unit Web ou pral kreye a (ex: 'Soutien_Video')
-      UnityAds.show('Soutien_Video', {
-        onComplete: (id) => console.log('Fini!'),
-        onFailed: (id, err, msg) => alert("Unity Ads: " + msg)
-      });
-    }
-  }
-</script>
-  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3551199857779767"
-     crossorigin="anonymous"></script>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3551199857779767" crossorigin="anonymous"></script>
 
-    <link rel="icon" type="image/png" href="favicon-32x32.png"/>
-
+  <link rel="icon" type="image/png" href="favicon-32x32.png"/>
   <title>RIVAYO_TECH</title>
-
- 
-</head>
-  <!--
-    If you are serving your web app in a path other than the root, change the
-    href value below to reflect the base path you are serving from.
-
-    The path provided below has to start and end with a slash "/" in order for
-    it to work correctly.
-
-    For more details:
-    * https://developer.mozilla.org/en-US/docs/Web/HTML/Element/base
-
-    This is a placeholder for base href that will be replaced by the value of
-    the `--base-href` argument provided to `flutter build`.
-  -->
   <base href="$FLUTTER_BASE_HREF">
-
   <meta charset="UTF-8">
   <meta content="IE=Edge" http-equiv="X-UA-Compatible">
   <meta name="description" content="RIVAYO TECH — solutions numériques : développement d'applications, sites web et stratégies de monétisation.">
-
-  <!-- iOS meta tags & icons -->
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
   <meta name="apple-mobile-web-app-title" content="RIVAYO_TECH">
   <link rel="apple-touch-icon" href="icons/Icon-192(2).png">
-
-  <!-- Favicon -->
-  <link rel="icon" type="image/png" href="favicon-32x32.png"/>
-
-  <title>RIVAYO_TECH</title>
-  <link rel="manifest" href="/manifest.json">
 </head>
 <body>
   <script src="/flutter_bootstrap.js" async></script>
