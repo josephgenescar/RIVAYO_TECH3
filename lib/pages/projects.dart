@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'dart:js' as js;
-import 'dart:ui_web' as ui; // Pou anrejistre view HTML la
-import 'dart:html' as html; // Pou manipile kòd JavaScript Adsterra a
+import 'dart:ui_web' as ui;
+import 'dart:html' as html;
 import '../widgets/custom_app_bar.dart';
 import '../widgets/footer.dart';
 import '../widgets/menu_drawer.dart';
@@ -14,7 +14,7 @@ class ProjectsPage extends StatelessWidget {
     const Color tealRivayo = Color(0xFF00B4AD);
     const Color nwaRivayo = Color(0xFF0B0D0E);
 
-    // NOU ANREJISTRE BANNER LA ISIT LA POU FLUTTER WEB KA KONPRANN LI
+    // NOU ITILIZE BON KEY ADSTERRA OU SOT VOYE A ISIT LA
     // ignore: undefined_prefixed_name
     ui.platformViewRegistry.registerViewFactory(
       'adsterra-banner-728x90',
@@ -26,11 +26,21 @@ class ProjectsPage extends StatelessWidget {
         ..append(
           html.ScriptElement()
             ..async = true
-            ..src =
-                "//www.topcreativeformat.com/6a078d50925ec49a010f6f08265632ac/invoke.js",
+            ..innerHtml = """
+            atOptions = {
+              'key' : '269b326a3f602db6ed9179fa9906576b',
+              'format' : 'iframe',
+              'height' : 90,
+              'width' : 728,
+              'params' : {}
+            };
+          """,
         )
         ..append(
-          html.DivElement()..id = "container-6a078d50925ec49a010f6f08265632ac",
+          html.ScriptElement()
+            ..async = true
+            ..src =
+                "https://www.highperformanceformat.com/269b326a3f602db6ed9179fa9906576b/invoke.js",
         ),
     );
 
@@ -145,7 +155,7 @@ class ProjectsPage extends StatelessWidget {
                 ),
               ),
 
-              // --- SEKSYON BANNER 728x90 (OTOMATIK) ---
+              // --- SEKSYON BANNER 728x90 (LIVE) ---
               const SizedBox(height: 20),
               const Center(
                 child: Column(
@@ -155,6 +165,7 @@ class ProjectsPage extends StatelessWidget {
                       style: TextStyle(color: Colors.white38, fontSize: 12),
                     ),
                     SizedBox(height: 10),
+                    // Sa a ap afiche banner 728x90 la
                     SizedBox(
                       width: 728,
                       height: 90,
@@ -176,7 +187,7 @@ class ProjectsPage extends StatelessWidget {
   }
 }
 
-// _ProjectGrid rete menm jan...
+// Grid la rete menm jan
 class _ProjectGrid extends StatelessWidget {
   const _ProjectGrid();
   @override
