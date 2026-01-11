@@ -15,17 +15,29 @@
     <script src="https://cdn.unityads.unity3d.com/sdk/3.4/unityads.js"></script>
 
 <script>
-  const myGameId = '4350361'; 
-  const isTestMode = true;
+  // Sa a ap tann tout paj la fin chaje nèt
+  window.onload = function() {
+    const myGameId = '4350361'; 
+    const isTestMode = true;
 
-  // Lòd sa a bezwen SDK ki anlè a pou l mache
-  UnityAds.initialize(myGameId, isTestMode, {
-    onComplete: () => console.log('https://cdn.unityads.unity3d.com/sdk/3.4/unityads.js'),
-    onFailed: (error, message) => console.log('SDK a gen pwoblèm: ' + message)
-  });
+    // Nou tcheke si SDK a la tout bon vre
+    if (typeof UnityAds !== 'undefined') {
+      UnityAds.initialize(myGameId, isTestMode, {
+        onComplete: () => console.log('SDK Unity chaje ak siksè!'),
+        onFailed: (error, message) => console.log('SDK a gen pwoblèm: ' + message)
+      });
+    } else {
+      console.error("SDK UnityAds la pa jwenn. Tcheke si ou gen entènèt.");
+    }
+  };
 
   function afichePubUnity() {
-    UnityAds.show('Rivayo');
+    if (typeof UnityAds !== 'undefined') {
+      // Atansyon: Asire w 'Rivayo' se non Placement ID ou a nan Dashboard la
+      UnityAds.show('Rivayo'); 
+    } else {
+      alert("Piblisite a poko pare, tann yon ti segond.");
+    }
   }
 </script>
 </body>

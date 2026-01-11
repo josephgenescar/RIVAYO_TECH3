@@ -1,1 +1,5 @@
-unityads.com, 3278855, DIRECT, 244199c43c246f40
+ unityads.com, 3278855, DIRECT, 244199c43c246f40
+
+ironsource.com, 3278855, DIRECT, c0e35123d9178121
+ssacdn.com, 3278855, DIRECT, c0e35123d9178121
+    
