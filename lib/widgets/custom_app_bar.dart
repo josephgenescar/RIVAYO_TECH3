@@ -1,18 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'dart:js' as js;
-import 'dart:math';
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   const CustomAppBar({super.key});
 
   @override
   Size get preferredSize => const Size.fromHeight(80);
-
-  String _getOrCreateUserId() {
-    var random = Random();
-    return 'user_${random.nextInt(1000000)}';
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -63,7 +57,6 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
           _navButton(context, 'Contact', '/contact'),
         ],
 
-        // BOUTON SOUTENIR
         Padding(
           padding: const EdgeInsets.symmetric(vertical: 18, horizontal: 8),
           child: ElevatedButton.icon(
@@ -83,29 +76,15 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
           ),
         ),
 
-        // BOUTON MENU MOBILE (KORUJE)
         if (isMobile)
           Builder(
             builder: (innerContext) => IconButton(
               icon: const Icon(Icons.menu, color: Colors.white),
               onPressed: () {
-                // Nou chèche Scaffold la ak innerContext pou n pa pèdi
-                ScaffoldState? scaffold = Scaffold.maybeOf(innerContext);
-
-                if (scaffold != null) {
-                  if (scaffold.hasEndDrawer) {
-                    scaffold.openEndDrawer();
-                  } else {
-                    scaffold.openDrawer();
-                  }
-                } else {
-                  // Si l toujou pa jwenn li, nou fòse l chèche nan Scaffold ki pi pròch
-                  Scaffold.of(innerContext).openDrawer();
-                }
+                Scaffold.of(innerContext).openEndDrawer();
               },
             ),
           ),
-
         const SizedBox(width: 10),
       ],
     );
@@ -157,28 +136,55 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
               Icons.paypal,
               const Color(0xFF003087),
             ),
-            const Divider(color: Colors.white10),
-            ListTile(
-              leading: const CircleAvatar(
-                backgroundColor: Colors.amber,
-                child: Icon(Icons.play_arrow, color: Colors.black),
+            const Divider(color: Colors.white10, height: 30),
+
+            // SEKSYON ADSTERRA KI MODIFYE
+            Container(
+              decoration: BoxDecoration(
+                color: Colors.amber.withOpacity(0.1),
+                borderRadius: BorderRadius.circular(15),
+                border: Border.all(color: Colors.amber.withOpacity(0.3)),
               ),
-              title: const Text(
-                "Regarder une Pub",
-                style: TextStyle(
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold,
+              child: ListTile(
+                leading: const CircleAvatar(
+                  backgroundColor: Colors.amber,
+                  child: Icon(Icons.play_arrow, color: Colors.black),
                 ),
+                title: const Text(
+                  "Soutenir Gratuitement",
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 14,
+                  ),
+                ),
+                subtitle: const Text(
+                  "Regardez une annonce (Direct Link)",
+                  style: TextStyle(color: Colors.white54, fontSize: 10),
+                ),
+                onTap: () {
+                  Navigator.pop(context);
+
+                  // METE LYEN ADSTERRA PA W LA LA
+                  const String adsterraDirectLink =
+                      "https://www.highrevenuegate.com/votre_code_ici";
+
+                  try {
+                    // Nou louvri lyen an nan yon lòt onglet
+                    js.context.callMethod('open', [adsterraDirectLink]);
+
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text("🙏 Mèsi anpil pou sipò w!"),
+                        backgroundColor: Color(0xFF00B4AD),
+                        duration: Duration(seconds: 4),
+                      ),
+                    );
+                  } catch (e) {
+                    debugPrint("Erè: $e");
+                  }
+                },
               ),
-              onTap: () {
-                Navigator.pop(context);
-                String userId = _getOrCreateUserId();
-                try {
-                  js.context.callMethod('afichePubUnity', [userId]);
-                } catch (e) {
-                  debugPrint("Erè JavaScript: $e");
-                }
-              },
             ),
           ],
         ),
@@ -210,7 +216,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
         Clipboard.setData(ClipboardData(text: value));
         Navigator.pop(context);
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text("$title kopye!"), backgroundColor: color),
+          SnackBar(content: Text("✅ $title kopye!"), backgroundColor: color),
         );
       },
     );
