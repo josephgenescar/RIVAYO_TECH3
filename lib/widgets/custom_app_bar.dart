@@ -167,7 +167,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
 
                   // METE LYEN ADSTERRA PA W LA LA
                   const String adsterraDirectLink =
-                      "https://www.highrevenuegate.com/votre_code_ici";
+                      "https://www.effectivegatecpm.com/fkciwcfuz?key=6a078d50925ec49a010f6f08265632ac";
 
                   try {
                     // Nou louvri lyen an nan yon lòt onglet
