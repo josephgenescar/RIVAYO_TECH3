@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'dart:js' as js;
-import 'dart:math'; // Pou jenere yon ID o aza
+import 'dart:math';
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   const CustomAppBar({super.key});
@@ -9,7 +9,6 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Size get preferredSize => const Size.fromHeight(80);
 
-  // Ti fonksyon pou kreye yon UserID o aza pou Unity ka aksepte piblisite a
   String _getOrCreateUserId() {
     var random = Random();
     return 'user_${random.nextInt(1000000)}';
@@ -84,11 +83,26 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
           ),
         ),
 
+        // BOUTON MENU MOBILE (KORUJE)
         if (isMobile)
           Builder(
-            builder: (context) => IconButton(
+            builder: (innerContext) => IconButton(
               icon: const Icon(Icons.menu, color: Colors.white),
-              onPressed: () => Scaffold.of(context).openEndDrawer(),
+              onPressed: () {
+                // Nou chèche Scaffold la ak innerContext pou n pa pèdi
+                ScaffoldState? scaffold = Scaffold.maybeOf(innerContext);
+
+                if (scaffold != null) {
+                  if (scaffold.hasEndDrawer) {
+                    scaffold.openEndDrawer();
+                  } else {
+                    scaffold.openDrawer();
+                  }
+                } else {
+                  // Si l toujou pa jwenn li, nou fòse l chèche nan Scaffold ki pi pròch
+                  Scaffold.of(innerContext).openDrawer();
+                }
+              },
             ),
           ),
 
@@ -144,8 +158,6 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
               const Color(0xFF003087),
             ),
             const Divider(color: Colors.white10),
-
-            // LÈ OU KLIKE SOU "REGARDER UNE PUB"
             ListTile(
               leading: const CircleAvatar(
                 backgroundColor: Colors.amber,
@@ -160,15 +172,11 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
               ),
               onTap: () {
                 Navigator.pop(context);
-
-                // NOU RELE JS LA AK YON ID INIK
                 String userId = _getOrCreateUserId();
-                print("Rele piblisite pou: $userId");
-
                 try {
                   js.context.callMethod('afichePubUnity', [userId]);
                 } catch (e) {
-                  print("Erè JavaScript: $e");
+                  debugPrint("Erè JavaScript: $e");
                 }
               },
             ),
