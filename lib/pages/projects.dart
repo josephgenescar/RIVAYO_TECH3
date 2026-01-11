@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'dart:js' as js; // Pou ouvri pub Adsterra a
 import '../widgets/custom_app_bar.dart';
 import '../widgets/footer.dart';
-import '../widgets/menu_drawer.dart'; // NOUVO IMPORT LA
+import '../widgets/menu_drawer.dart';
 
 class ProjectsPage extends StatelessWidget {
   const ProjectsPage({super.key});
@@ -15,10 +16,7 @@ class ProjectsPage extends StatelessWidget {
       backgroundColor: nwaRivayo,
       extendBodyBehindAppBar: true,
       appBar: const CustomAppBar(),
-
-      // NOU AJOUTE DRAWER A ISIT LA
       endDrawer: const MenuDrawer(),
-
       body: Container(
         decoration: const BoxDecoration(
           gradient: LinearGradient(
@@ -60,6 +58,73 @@ class ProjectsPage extends StatelessWidget {
 
               const Padding(padding: EdgeInsets.all(20), child: _ProjectGrid()),
 
+              // --- SEKSYON PUB ADSTERRA SPESYAL POU PAJ PROJET ---
+              Padding(
+                padding: const EdgeInsets.all(20),
+                child: Container(
+                  width: double.infinity,
+                  padding: const EdgeInsets.all(25),
+                  decoration: BoxDecoration(
+                    color: const Color(0xFF1A1D1E),
+                    borderRadius: BorderRadius.circular(20),
+                    border: Border.all(color: tealRivayo.withOpacity(0.5)),
+                    boxShadow: [
+                      BoxShadow(
+                        color: tealRivayo.withOpacity(0.1),
+                        blurRadius: 20,
+                        spreadRadius: 2,
+                      ),
+                    ],
+                  ),
+                  child: Column(
+                    children: [
+                      const Icon(
+                        Icons.volunteer_activism,
+                        color: tealRivayo,
+                        size: 40,
+                      ),
+                      const SizedBox(height: 15),
+                      const Text(
+                        "Ou renmen pwojè nou yo?",
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      const SizedBox(height: 10),
+                      const Text(
+                        "Ou ka sipòte Rivayo Tech gratis sèlman lè w gade yon ti piblisite.",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(color: Colors.white70, fontSize: 14),
+                      ),
+                      const SizedBox(height: 20),
+                      ElevatedButton(
+                        onPressed: () {
+                          // KOLE LYEN SMARTLINK ADSTERRA PA W LA ISIT LA
+                          const String adsterraLink =
+                              "https://www.effectivegatecpm.com/fkciwcfuz?key=6a078d50925ec49a010f6f08265632ac";
+                          js.context.callMethod('open', [adsterraLink]);
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: tealRivayo,
+                          foregroundColor: Colors.white,
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 30,
+                            vertical: 15,
+                          ),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(30),
+                          ),
+                        ),
+                        child: const Text("GADE YON PUB POU SIPÒTE NOU"),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+
+              // --------------------------------------------------
               const SizedBox(height: 40),
               const Footer(),
             ],
