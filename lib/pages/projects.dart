@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import 'dart:js' as js; // Pou ouvri pub Adsterra a
+import 'dart:js' as js;
+import 'dart:ui_web' as ui; // Pou anrejistre view HTML la
+import 'dart:html' as html; // Pou manipile kòd JavaScript Adsterra a
 import '../widgets/custom_app_bar.dart';
 import '../widgets/footer.dart';
 import '../widgets/menu_drawer.dart';
@@ -11,6 +13,26 @@ class ProjectsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     const Color tealRivayo = Color(0xFF00B4AD);
     const Color nwaRivayo = Color(0xFF0B0D0E);
+
+    // NOU ANREJISTRE BANNER LA ISIT LA POU FLUTTER WEB KA KONPRANN LI
+    // ignore: undefined_prefixed_name
+    ui.platformViewRegistry.registerViewFactory(
+      'adsterra-banner-728x90',
+      (int viewId) => html.DivElement()
+        ..style.width = '100%'
+        ..style.height = '100%'
+        ..style.display = 'flex'
+        ..style.justifyContent = 'center'
+        ..append(
+          html.ScriptElement()
+            ..async = true
+            ..src =
+                "//www.topcreativeformat.com/6a078d50925ec49a010f6f08265632ac/invoke.js",
+        )
+        ..append(
+          html.DivElement()..id = "container-6a078d50925ec49a010f6f08265632ac",
+        ),
+    );
 
     return Scaffold(
       backgroundColor: nwaRivayo,
@@ -58,7 +80,7 @@ class ProjectsPage extends StatelessWidget {
 
               const Padding(padding: EdgeInsets.all(20), child: _ProjectGrid()),
 
-              // --- SEKSYON PUB ADSTERRA SPESYAL POU PAJ PROJET ---
+              // --- SEKSYON SMARTLINK (BOUTON) ---
               Padding(
                 padding: const EdgeInsets.all(20),
                 child: Container(
@@ -101,7 +123,6 @@ class ProjectsPage extends StatelessWidget {
                       const SizedBox(height: 20),
                       ElevatedButton(
                         onPressed: () {
-                          // KOLE LYEN SMARTLINK ADSTERRA PA W LA ISIT LA
                           const String adsterraLink =
                               "https://www.effectivegatecpm.com/fkciwcfuz?key=6a078d50925ec49a010f6f08265632ac";
                           js.context.callMethod('open', [adsterraLink]);
@@ -124,7 +145,27 @@ class ProjectsPage extends StatelessWidget {
                 ),
               ),
 
-              // --------------------------------------------------
+              // --- SEKSYON BANNER 728x90 (OTOMATIK) ---
+              const SizedBox(height: 20),
+              const Center(
+                child: Column(
+                  children: [
+                    Text(
+                      "Sponsors",
+                      style: TextStyle(color: Colors.white38, fontSize: 12),
+                    ),
+                    SizedBox(height: 10),
+                    SizedBox(
+                      width: 728,
+                      height: 90,
+                      child: HtmlElementView(
+                        viewType: 'adsterra-banner-728x90',
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+
               const SizedBox(height: 40),
               const Footer(),
             ],
@@ -135,13 +176,12 @@ class ProjectsPage extends StatelessWidget {
   }
 }
 
+// _ProjectGrid rete menm jan...
 class _ProjectGrid extends StatelessWidget {
   const _ProjectGrid();
-
   @override
   Widget build(BuildContext context) {
     const Color tealRivayo = Color(0xFF00B4AD);
-
     final projects = [
       {
         'title': 'Sistèm Jere Famasi',
@@ -170,7 +210,6 @@ class _ProjectGrid extends StatelessWidget {
         int crossAxisCount = constraints.maxWidth > 900
             ? 3
             : (constraints.maxWidth > 600 ? 2 : 1);
-
         return GridView.builder(
           shrinkWrap: true,
           physics: const NeverScrollableScrollPhysics(),
