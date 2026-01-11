@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
 import '../widgets/custom_app_bar.dart';
 import '../widgets/footer.dart';
-// import '../widgets/premium_fab.dart'; // Aktive sa si fichye a egziste
+import '../widgets/menu_drawer.dart'; // NOUVO IMPORT LA
 
 class AboutPage extends StatelessWidget {
   const AboutPage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    // Koulè Rivayo Tech
     const Color tealRivayo = Color(0xFF00B4AD);
     const Color nwaRivayo = Color(0xFF0B0D0E);
     const Color kadNwa = Color(0xFF1A1D1E);
@@ -17,7 +16,10 @@ class AboutPage extends StatelessWidget {
       backgroundColor: nwaRivayo,
       extendBodyBehindAppBar: true,
       appBar: const CustomAppBar(),
-      // floatingActionButton: const PremiumServiceFab(),
+
+      // AJOUTE LIY SA A ISIT LA:
+      endDrawer: const MenuDrawer(),
+
       body: Container(
         decoration: const BoxDecoration(
           gradient: LinearGradient(

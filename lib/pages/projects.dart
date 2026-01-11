@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import '../widgets/custom_app_bar.dart';
 import '../widgets/footer.dart';
-// import '../widgets/premium_fab.dart'; // Aktive sa si fichye a egziste
+import '../widgets/menu_drawer.dart'; // NOUVO IMPORT LA
 
 class ProjectsPage extends StatelessWidget {
   const ProjectsPage({super.key});
@@ -15,7 +15,10 @@ class ProjectsPage extends StatelessWidget {
       backgroundColor: nwaRivayo,
       extendBodyBehindAppBar: true,
       appBar: const CustomAppBar(),
-      // floatingActionButton: const PremiumServiceFab(),
+
+      // NOU AJOUTE DRAWER A ISIT LA
+      endDrawer: const MenuDrawer(),
+
       body: Container(
         decoration: const BoxDecoration(
           gradient: LinearGradient(
@@ -74,7 +77,6 @@ class _ProjectGrid extends StatelessWidget {
   Widget build(BuildContext context) {
     const Color tealRivayo = Color(0xFF00B4AD);
 
-    // Done pwojè yo ak enfòmasyon ki sou flyers la
     final projects = [
       {
         'title': 'Sistèm Jere Famasi',
@@ -135,7 +137,6 @@ class _ProjectGrid extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // Imaj Pwojè a
                   Expanded(
                     child: ClipRRect(
                       borderRadius: const BorderRadius.vertical(
@@ -156,7 +157,6 @@ class _ProjectGrid extends StatelessWidget {
                       ),
                     ),
                   ),
-                  // Detay Pwojè a
                   Padding(
                     padding: const EdgeInsets.all(15),
                     child: Column(

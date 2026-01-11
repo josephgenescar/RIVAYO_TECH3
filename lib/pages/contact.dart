@@ -5,6 +5,7 @@ import 'package:http/http.dart' as http;
 
 import '../widgets/custom_app_bar.dart';
 import '../widgets/footer.dart';
+import '../widgets/menu_drawer.dart'; // NOUVO IMPORT LA
 
 class ContactPage extends StatefulWidget {
   const ContactPage({super.key});
@@ -77,6 +78,10 @@ class _ContactPageState extends State<ContactPage> {
       backgroundColor: nwaRivayo,
       extendBodyBehindAppBar: true,
       appBar: const CustomAppBar(),
+
+      // NOU AJOUTE DRAWER A ISIT LA POU BOUTON MENU AN KA LOUVRI L
+      endDrawer: const MenuDrawer(),
+
       body: Container(
         decoration: const BoxDecoration(
           gradient: LinearGradient(
@@ -141,6 +146,7 @@ class _ContactPageState extends State<ContactPage> {
     );
   }
 
+  // ... (Tout rès Widget _buildContactForm, _customField, ak _contactInfoTile yo rete menm jan an)
   Widget _buildContactForm() {
     return Container(
       padding: const EdgeInsets.all(25),

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../widgets/custom_app_bar.dart';
 import '../widgets/service_card.dart';
 import '../widgets/footer.dart';
+import '../widgets/menu_drawer.dart'; // NOUVO IMPORT LA
 
 class ServicesPage extends StatelessWidget {
   const ServicesPage({super.key});
@@ -14,8 +15,12 @@ class ServicesPage extends StatelessWidget {
 
     return Scaffold(
       backgroundColor: nwaRivayo,
-      extendBodyBehindAppBar: true, // Pou CustomAppBar ka melanje ak gradyan an
+      extendBodyBehindAppBar: true,
       appBar: const CustomAppBar(),
+
+      // NOU AJOUTE DRAWER A POU MOBIL
+      endDrawer: const MenuDrawer(),
+
       body: Container(
         decoration: const BoxDecoration(
           gradient: LinearGradient(
